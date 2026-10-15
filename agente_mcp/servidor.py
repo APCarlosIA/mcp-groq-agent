@@ -5,7 +5,7 @@ import sys
 
 from mcp.server.mcpserver import MCPServer
 
-from agente_mcp.herramientas import calculadora, hora
+from agente_mcp.herramientas import calculadora, hora, notas
 
 logger = logging.getLogger(__name__)
 
@@ -17,6 +17,7 @@ def crear_servidor() -> MCPServer:
     mcp = MCPServer("herramientas-demo", version="0.1.0")
     calculadora.registrar(mcp)
     hora.registrar(mcp)
+    notas.registrar(mcp)
     return mcp
 
 
