@@ -44,3 +44,12 @@ async def test_resultados_largos_se_truncan(servidor, monkeypatch):
     async with conectar(servidor) as sesion:
         resultado = await sesion.ejecutar("hora_actual", {"zona_horaria": "UTC"})
     assert "truncado" in resultado.texto
+
+
+async def test_el_servidor_solo_recibe_las_variables_permitidas(tmp_path, monkeypatch):
+    # Es async solo porque todo el módulo está marcado con anyio
+    monkeypatch.setenv("NOTAS_DIR", str(tmp_path))
+    monkeypatch.setenv("GROQ_API_KEY", "clave-de-prueba")
+    entorno = cliente.parametros_servidor_local().env
+    assert entorno["NOTAS_DIR"] == str(tmp_path)
+    assert "GROQ_API_KEY" not in entorno

@@ -8,6 +8,7 @@ que el fallo de una herramienta no tumbe la conversación.
 import argparse
 import json
 import logging
+import os
 import sys
 from collections.abc import AsyncIterator, Sequence
 from contextlib import asynccontextmanager
@@ -26,6 +27,9 @@ RAIZ_PROYECTO = Path(__file__).resolve().parents[1]  # <raíz>/agente_mcp/client
 TIMEOUT_LLAMADA = 30.0  # segundos máximos por llamada a una herramienta
 MAX_RESULTADO = 4_000  # caracteres máximos que se devuelven al LLM
 _MARCA_TRUNCADO = "… [resultado truncado]"
+# Variables del entorno que se reenvían al servidor. El resto (incluida la API key
+# de Groq) no se comparte con el subproceso.
+VARIABLES_PARA_EL_SERVIDOR = ("NOTAS_DIR",)
 
 
 @dataclass(frozen=True, slots=True)
@@ -38,12 +42,16 @@ class ResultadoHerramienta:
 
 def parametros_servidor_local() -> StdioServerParameters:
     """Parámetros para lanzar nuestro servidor como subproceso (transporte stdio)."""
+    # El subproceso no hereda nuestro entorno (ni secretos): solo recibe esto
+    entorno = {"PYTHONPATH": str(RAIZ_PROYECTO)}
+    for variable in VARIABLES_PARA_EL_SERVIDOR:
+        if variable in os.environ:
+            entorno[variable] = os.environ[variable]
     return StdioServerParameters(
         # sys.executable es el Python que ejecuta este programa (el del .venv)
         command=sys.executable,
         args=["-m", "agente_mcp.servidor"],
-        # El subproceso no hereda nuestro entorno (ni secretos): solo recibe esto
-        env={"PYTHONPATH": str(RAIZ_PROYECTO)},
+        env=entorno,
     )
 
 
