@@ -2,16 +2,11 @@ import pytest
 
 from agente_mcp import cliente
 from agente_mcp.cliente import conectar
-from agente_mcp.servidor import crear_servidor
 
 pytestmark = pytest.mark.anyio  # todos los tests de este archivo son asíncronos
 
 
 @pytest.fixture
-def servidor(tmp_path, monkeypatch):
-    """Servidor en memoria que guarda sus notas en una carpeta temporal."""
-    monkeypatch.setenv("NOTAS_DIR", str(tmp_path / "notas"))
-    return crear_servidor()
 
 
 async def test_lista_las_cuatro_herramientas(servidor):
