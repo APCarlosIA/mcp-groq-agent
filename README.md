@@ -2,6 +2,7 @@
 
 ![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue)
 ![Licencia MIT](https://img.shields.io/badge/licencia-MIT-green)
+[![CI](https://github.com/APCarlosIA/mcp-groq-agent/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/APCarlosIA/mcp-groq-agent/actions/workflows/ci.yml)
 
 Un **servidor MCP** en Python con cuatro herramientas, un **cliente MCP** y un **agente** que usa un LLM de [Groq](https://groq.com) (plan gratuito) para decidir cuándo llamarlas.
 
