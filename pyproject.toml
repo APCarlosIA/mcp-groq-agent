@@ -1,0 +1,26 @@
+[tool.ruff]
+line-length = 100
+target-version = "py311"  # el código usa datetime.UTC, que exige Python 3.11+
+
+[tool.ruff.lint]
+select = [
+    "E", "W",  # estilo (pycodestyle)
+    "F",       # errores típicos: imports sin usar, nombres sin definir...
+    "I",       # orden de los imports
+    "B",       # errores sutiles frecuentes (bugbear)
+    "UP",      # sintaxis moderna de Python
+    "S",       # seguridad (bandit)
+    "SIM",     # simplificaciones
+    "PT",      # buenas prácticas de pytest
+    "RUF",     # reglas propias de ruff
+]
+ignore = [
+    "E501",  # la longitud de línea la controla el formateador
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"]  # `assert` es lo normal en los tests
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]  # permite ejecutar `pytest` a secas, sin `python -m`
