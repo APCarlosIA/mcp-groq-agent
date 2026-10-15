@@ -105,12 +105,15 @@ def _error_para_usuario(error: groq.APIError) -> ErrorAgente:
     if isinstance(error, groq.RateLimitError):
         espera = error.response.headers.get("retry-after", "")
         sufijo = f"Espera unos {espera} segundos" if espera.isdigit() else "Espera un poco"
-        return ErrorAgente(f"Se alcanzó el límite de uso del plan gratuito de Groq. {sufijo} y reinténtalo.")
+        return ErrorAgente(
+            f"Se alcanzó el límite de uso del plan gratuito de Groq. {sufijo} y reinténtalo."
+        )
     if isinstance(error, groq.APIConnectionError):
         return ErrorAgente("No se pudo conectar con Groq. Comprueba tu conexión a internet.")
     if isinstance(error, groq.APIStatusError):
         return ErrorAgente(f"Groq respondió con un error ({error.status_code}).")
     return ErrorAgente("Error inesperado al comunicarse con Groq.")
+
 
 class Agente:
     """Conversación con un LLM de Groq que puede usar las herramientas de un servidor MCP."""
@@ -178,7 +181,9 @@ class Agente:
             mensaje = await self._pedir_al_llm()
             llamadas = mensaje.tool_calls
             if not llamadas:
-                texto = (mensaje.content or "").strip() or "(El modelo no devolvió ninguna respuesta.)"
+                texto = (
+                    mensaje.content or ""
+                ).strip() or "(El modelo no devolvió ninguna respuesta.)"
                 self._mensajes.append({"role": "assistant", "content": texto})
                 return texto
 
@@ -268,6 +273,7 @@ class Agente:
             if siguiente is None:  # un solo turno gigante: no se puede recortar más
                 return
             del mensajes[1:siguiente]  # el índice 0 es el prompt de sistema
+
 
 # --- Línea de comandos ---
 

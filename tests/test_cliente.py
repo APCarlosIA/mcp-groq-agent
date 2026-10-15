@@ -7,8 +7,6 @@ pytestmark = pytest.mark.anyio  # todos los tests de este archivo son asíncrono
 
 
 @pytest.fixture
-
-
 async def test_lista_las_cuatro_herramientas(servidor):
     async with conectar(servidor) as sesion:
         nombres = {h.name for h in await sesion.listar_herramientas()}

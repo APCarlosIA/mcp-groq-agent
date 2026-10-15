@@ -35,6 +35,7 @@ class ResultadoHerramienta:
     texto: str
     es_error: bool = False
 
+
 def parametros_servidor_local() -> StdioServerParameters:
     """Parámetros para lanzar nuestro servidor como subproceso (transporte stdio)."""
     return StdioServerParameters(
@@ -99,6 +100,7 @@ class SesionMCP:
             logger.exception("Error de protocolo al llamar a %s", nombre)
             return ResultadoHerramienta("Error de comunicación con la herramienta.", True)
         return ResultadoHerramienta(_extraer_texto(resultado.content), resultado.is_error)
+
 
 @asynccontextmanager
 async def conectar(
@@ -183,4 +185,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

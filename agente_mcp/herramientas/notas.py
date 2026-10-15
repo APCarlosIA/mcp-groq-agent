@@ -38,6 +38,7 @@ def directorio_por_defecto() -> Path:
     # este archivo está en <raíz>/agente_mcp/herramientas/notas.py
     return Path(__file__).resolve().parents[2] / "notas"
 
+
 def _normalizar_titulo(titulo: str) -> str:
     """Valida el título (lista blanca) y lo devuelve en minúsculas y sin espacios."""
     titulo = titulo.strip().lower()

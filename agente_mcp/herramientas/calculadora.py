@@ -46,9 +46,8 @@ def _evaluar_nodo(nodo: ast.AST) -> Numero:
         case ast.UnaryOp(op=op, operand=operando) if type(op) in _OPERADORES_UNARIOS:
             return _OPERADORES_UNARIOS[type(op)](_evaluar_nodo(operando))
         case _:
-            raise ErrorCalculo(
-                "Solo se permiten números y los operadores + - * / con paréntesis."
-            )
+            raise ErrorCalculo("Solo se permiten números y los operadores + - * / con paréntesis.")
+
 
 def evaluar(expresion: str) -> Numero:
     """Evalúa una expresión aritmética de forma segura.
@@ -97,6 +96,3 @@ def registrar(mcp: MCPServer) -> None:
             # ToolError marca la llamada como fallida (is_error=true) y el LLM
             # recibe solo nuestro mensaje controlado, sin detalles internos.
             raise ToolError(str(e)) from e
-
-        
-
